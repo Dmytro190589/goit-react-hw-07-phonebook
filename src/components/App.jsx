@@ -4,7 +4,12 @@ import Filter from './Filter/Filter';
 import ContactList from './ContactsList/ContactsList';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getContacts, getFilter, getIsLoading } from 'redux/selectors';
+import {
+  getContacts,
+  getError,
+  getFilter,
+  getIsLoading,
+} from 'redux/selectors';
 import { fetchContacts } from 'redux/operations';
 import { PulseLoader } from 'react-spinners';
 
@@ -25,6 +30,7 @@ export default function App() {
   const contacts = useSelector(getContacts);
   const filter = useSelector(getFilter);
   const isLoading = useSelector(getIsLoading);
+  const error = useSelector(getError);
   const filteredContacts = () => {
     if (filter) {
       return contacts.filter(i =>
@@ -42,6 +48,7 @@ export default function App() {
       <h2>Contacts</h2>
       <Filter />
       {isLoading && <PulseLoader color="#9789c1" cssOverride={override} />}
+      {error && <b style={{ color: 'red', textAlign: 'center' }}>{error}</b>}
       <ContactList contacts={result} />
     </div>
   );
