@@ -2,12 +2,29 @@ import css from './App.module.css';
 import ContactForm from './ContactsForm/ContactsForm';
 import Filter from './Filter/Filter';
 import ContactList from './ContactsList/ContactsList';
-
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getContacts, getFilter, getIsLoading } from 'redux/selectors';
+import { fetchContacts } from 'redux/operations';
+import { PulseLoader } from 'react-spinners';
 
 export default function App() {
-  const contacts = useSelector(state => state.contacts);
-  const filter = useSelector(state => state.filter);
+  const override = {
+    position: 'fixed',
+    top: '50%',
+    left: '50%',
+    transform: 'translateX(-50%) translateY(-50%)',
+  };
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
+
+  const contacts = useSelector(getContacts);
+  const filter = useSelector(getFilter);
+  const isLoading = useSelector(getIsLoading);
   const filteredContacts = () => {
     if (filter) {
       return contacts.filter(i =>
@@ -24,6 +41,7 @@ export default function App() {
       <ContactForm />
       <h2>Contacts</h2>
       <Filter />
+      {isLoading && <PulseLoader color="#9789c1" cssOverride={override} />}
       <ContactList contacts={result} />
     </div>
   );

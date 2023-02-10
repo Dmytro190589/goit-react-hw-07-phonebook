@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { nanoid } from '@reduxjs/toolkit';
-import { addContacts } from 'redux/contacts';
+import { addContacts } from 'redux/operations';
 import css from './Contacts.module.css';
 
 export default function ContactForm() {
