@@ -20,20 +20,18 @@ const contacts = createSlice({
     },
     extraReducers: {
         [fetchContacts.pending]: handlePending,
+        [addContacts.pending]: handlePending,
+        [deleteContact.pending]: handlePending,
         [fetchContacts.fulfilled](state, { payload }) {
             state.isLoading = false;
             state.error = null;
             state.items = payload;
         },
-        [fetchContacts.rejected]: handleRejected,
-        [addContacts.pending]: handlePending,
         [addContacts.fulfilled](state, { payload }) {
             state.isLoading = false;
             state.error = null;
             state.items.push({ payload })
         },
-        [addContacts.rejected]: handleRejected,
-        [deleteContact.pending]: handlePending,
         [deleteContact.fulfilled](state, { payload }) {
             state.isLoading = false;
             const index = state.items.findIndex(
@@ -42,6 +40,8 @@ const contacts = createSlice({
             state.items.splice(index, 1);
             state.error = null;
         },
+        [fetchContacts.rejected]: handleRejected,
+        [addContacts.rejected]: handleRejected,
         [deleteContact.rejected]: handleRejected,
     }
 })
